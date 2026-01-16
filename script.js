@@ -10,7 +10,6 @@ const showResultsBtn = document.getElementById("showResultsBtn");
 const resultsSummary = document.getElementById("resultsSummary");
 const resultWord = document.getElementById("resultWord");
 const resultImposter = document.getElementById("resultImposter");
-const reviewCluesBtn = document.getElementById("reviewCluesBtn");
 const nextRoundBtn = document.getElementById("nextRoundBtn");
 const startingPlayerMessage = document.getElementById("startingPlayerMessage");
 const playerInput = document.getElementById("playerInput");
@@ -21,94 +20,648 @@ const categoriesField = document.getElementById("categoriesField");
 const createPackBtn = document.getElementById("createPackBtn");
 const selectedThemesList = document.getElementById("selectedThemesList");
 
-const themePacks = [
+const fallbackThemePacks = [
   {
     id: "animals",
     title: "Animales & Naturaleza",
     emoji: "🦊",
-    tag: "Relax",
     description: "Fauna, selva y bichos curiosos.",
     gradient: "linear-gradient(135deg, #0f172a, #2dd4bf)",
-    words: ["Leon", "Panda", "Camaleon", "Condor", "Nutria", "Orca"],
+    words: [
+      "Leon",
+      "Panda",
+      "Camaleon",
+      "Condor",
+      "Nutria",
+      "Orca",
+      "Jaguar",
+      "Perezoso",
+      "Cebra",
+      "Koala",
+      "Pulpo",
+      "Colibri",
+      "Bisonte",
+      "Lince",
+      "Morsa",
+      "Flamenco",
+      "Caiman",
+      "Capibara",
+      "Pavo Real",
+      "Bufalo",
+      "Mono Arana",
+      "Gorila",
+      "Hiena",
+      "Zorro Artico",
+      "Tortuga",
+      "Alpaca",
+      "Erizo",
+      "Ballena Azul",
+      "Rinoceronte",
+      "Tapir",
+      "Narval",
+      "Halcon",
+      "Ardilla",
+      "Camello",
+      "Guepardo",
+      "Delfin",
+      "Oso Polar",
+      "Iguana",
+      "Manati",
+      "Carpincho",
+      "Tucan",
+      "Armadillo",
+      "Lobo Marino",
+      "Caracol Gigante",
+      "Fenix",
+      "Gecko",
+      "Ciervo",
+      "Liebre",
+      "Murcielago",
+      "Grulla",
+      "Avispa",
+      "Langosta",
+      "Medusa",
+      "Barracuda",
+    ],
   },
   {
     id: "world",
     title: "Mundo & Lugares",
     emoji: "🌍",
-    tag: "Viajeros",
     description: "Ciudades iconicas y destinos.",
     gradient: "linear-gradient(135deg, #111827, #6366f1)",
-    words: ["Kioto", "Berlin", "Cartagena", "Marrakech", "Toronto", "Cusco"],
+    words: [
+      "Kioto",
+      "Berlin",
+      "Cartagena",
+      "Marrakech",
+      "Toronto",
+      "Cusco",
+      "Lisboa",
+      "Seul",
+      "Budapest",
+      "Reikiavik",
+      "Praga",
+      "Estambul",
+      "Bogota",
+      "Dublin",
+      "Sidney",
+      "Zanzibar",
+      "Manila",
+      "Oporto",
+      "Dubrovnik",
+      "Petra",
+      "Nairobi",
+      "Atenas",
+      "Oslo",
+      "Tallin",
+      "Hanoi",
+      "Malaga",
+      "Lima",
+      "Quito",
+      "Granada",
+      "Valparaiso",
+      "Fez",
+      "Edimburgo",
+      "Cracovia",
+      "Luxor",
+      "Hobart",
+      "Macau",
+      "Seattle",
+      "Boston",
+      "Reims",
+      "Ibiza",
+      "Miami",
+      "Oahu",
+      "Sevilla",
+      "La Habana",
+      "Busan",
+      "Mendoza",
+      "Guadalajara",
+      "Bruselas",
+      "Salzburgo",
+      "Mikonos",
+      "Santorini",
+      "Phuket",
+      "Zermatt",
+      "Banff",
+      "Ushuaia",
+    ],
   },
   {
     id: "food",
     title: "Comida & Bebidas",
     emoji: "🍜",
-    tag: "Familiar",
     description: "Platos famosos y antojos.",
     gradient: "linear-gradient(135deg, #ff9966, #ff5e62)",
-    words: ["Pizza", "Gazpacho", "Ceviche", "Empanada", "Croissant", "Ramen", "Paella"],
+    words: [
+      "Pizza",
+      "Gazpacho",
+      "Ceviche",
+      "Empanada",
+      "Croissant",
+      "Ramen",
+      "Paella",
+      "Tacos",
+      "Arepa",
+      "Gyoza",
+      "Falafel",
+      "Baklava",
+      "Sushi",
+      "Bibimbap",
+      "Fondue",
+      "Tiramisu",
+      "Polenta",
+      "Chilaquiles",
+      "Pozole",
+      "Pho",
+      "Satay",
+      "Pad Thai",
+      "Crepe",
+      "Hummus",
+      "Pupusa",
+      "Feijoada",
+      "Kimchi",
+      "Curry",
+      "Shakshuka",
+      "Calzone",
+      "Mochi",
+      "Burrito",
+      "Goulash",
+      "Milanesa",
+      "Churro",
+      "Pastel de Choclo",
+      "Sopaipilla",
+      "Risotto",
+      "Cannoli",
+      "Jamon Serrano",
+      "Causa",
+      "Tamales",
+      "Mezze",
+      "Mole",
+      "Arequipe",
+      "Coxinha",
+      "Laksa",
+      "Jollof",
+      "Okonomiyaki",
+      "Pierogi",
+      "Bibingka",
+      "Tagine",
+      "Banh Mi",
+      "Kebab",
+      "Khachapuri",
+      "Vindaloo",
+    ],
   },
   {
     id: "jobs",
     title: "Profesiones",
     emoji: "💼",
-    tag: "Versatil",
     description: "Roles cotidianos y curiosos.",
     gradient: "linear-gradient(135deg, #23a6d5, #23d5ab)",
-    words: ["Piloto", "Barista", "Astronauta", "Chef", "Profesor", "Detective"],
+    words: [
+      "Piloto",
+      "Barista",
+      "Astronauta",
+      "Chef",
+      "Profesor",
+      "Detective",
+      "Arquitecto",
+      "Bailarin",
+      "Periodista",
+      "Ingeniero",
+      "Paramedico",
+      "Psicologo",
+      "Biologo",
+      "Fotografo",
+      "Carpintero",
+      "Disenador",
+      "Electricista",
+      "Cerrajero",
+      "Panadero",
+      "Programador",
+      "Oceanografo",
+      "Arqueologo",
+      "Actor",
+      "Escultor",
+      "Agronomo",
+      "Jardinero",
+      "Soldado",
+      "Diplomatico",
+      "Contador",
+      "Abogado",
+      "Oficinista",
+      "Animador",
+      "Odontologo",
+      "Farmaceutico",
+      "Veterinario",
+      "Herrero",
+      "Analista",
+      "Chofer",
+      "Sommelier",
+      "Pastelero",
+      "Tatuador",
+      "Escritor",
+      "Editor",
+      "Guia Turistico",
+      "Locutor",
+      "Topografo",
+      "Guardabosques",
+      "Matematico",
+      "Cientifico de Datos",
+      "Entrenador",
+      "Geologo",
+      "Meteorologo",
+      "Maquinista",
+      "Barbero",
+      "Productor",
+      "Recepcionista",
+    ],
   },
   {
     id: "movies",
     title: "Series & Cine",
     emoji: "🎬",
-    tag: "Pop",
     description: "Peliculas y sagas memorables.",
     gradient: "linear-gradient(135deg, #7f7cfe, #a084e8)",
-    words: ["Inception", "Titanic", "Gladiator", "Amelie", "Avatar", "Matrix", "Coco"],
+    words: [
+      "Inception",
+      "Titanic",
+      "Gladiator",
+      "Amelie",
+      "Avatar",
+      "Matrix",
+      "Coco",
+      "Interstellar",
+      "Casablanca",
+      "Parasite",
+      "Frozen",
+      "Shrek",
+      "Rocky",
+      "Joker",
+      "Dune",
+      "Up",
+      "WallE",
+      "Terminator",
+      "Alien",
+      "Pulp Fiction",
+      "El Padrino",
+      "Forrest Gump",
+      "Mad Max",
+      "Black Panther",
+      "Moana",
+      "Toy Story",
+      "Finding Nemo",
+      "Los Increibles",
+      "La La Land",
+      "Blade Runner",
+      "Jurassic Park",
+      "Star Wars",
+      "El Hobbit",
+      "Harry Potter",
+      "El Senor de los Anillos",
+      "Stranger Things",
+      "Breaking Bad",
+      "The Crown",
+      "Dark",
+      "Narcos",
+      "The Witcher",
+      "The Mandalorian",
+      "Chernobyl",
+      "Severance",
+      "Friends",
+      "The Office",
+      "The Boys",
+      "Loki",
+      "Westworld",
+      "Sherlock",
+      "House",
+      "Better Call Saul",
+      "Andor",
+      "Arcane",
+      "Wednesday",
+      "One Piece",
+    ],
   },
   {
     id: "sports",
     title: "Deportes",
     emoji: "🏅",
-    tag: "Activo",
     description: "Eventos y equipamiento.",
     gradient: "linear-gradient(135deg, #42e695, #3bb2b8)",
-    words: ["Baloncesto", "Esgrima", "Surf", "Escalada", "Beisbol", "Rugby"],
+    words: [
+      "Baloncesto",
+      "Esgrima",
+      "Surf",
+      "Escalada",
+      "Beisbol",
+      "Rugby",
+      "Futbol",
+      "Tenis",
+      "Padel",
+      "Natacion",
+      "Atletismo",
+      "Boxeo",
+      "Ciclismo",
+      "Maraton",
+      "Triatlon",
+      "Snowboard",
+      "Skate",
+      "Patinaje",
+      "Remo",
+      "Waterpolo",
+      "Voleibol",
+      "Badminton",
+      "Cricket",
+      "Hockey",
+      "Karate",
+      "Judo",
+      "Taekwondo",
+      "Yoga",
+      "Pilates",
+      "Crossfit",
+      "Parkour",
+      "Senderismo",
+      "Esqui",
+      "Motocross",
+      "Karting",
+      "Parapente",
+      "Tiro con Arco",
+      "Kickboxing",
+      "Clavados",
+      "Boliche",
+      "Ping Pong",
+      "Ajedrez",
+      "Futbol Americano",
+      "Buceo",
+      "Rafting",
+      "Lucha Libre",
+      "Pesca Deportiva",
+      "Gimnasia Ritmica",
+      "Gimnasia Artistica",
+      "Danza Urbana",
+      "SUP",
+      "Kitesurf",
+      "Trail Running",
+      "BMX",
+      "Curling",
+      "Polo",
+    ],
   },
   {
     id: "summer",
     title: "Verano & Playa",
     emoji: "🏖️",
-    tag: "Fiesta",
     description: "Vacaciones soleadas y relax.",
     gradient: "linear-gradient(135deg, #f83600, #f9d423)",
-    words: ["Hamaca", "Coral", "Tiburon", "Catamaran", "Arena", "Ola Gigante"],
+    words: [
+      "Hamaca",
+      "Coral",
+      "Tiburon",
+      "Catamaran",
+      "Arena",
+      "Ola Gigante",
+      "Sombrilla",
+      "Coco",
+      "Snorkel",
+      "Chiringuito",
+      "Helado",
+      "Sandalia",
+      "Toalla",
+      "Gafas de Sol",
+      "Bloqueador",
+      "Palmera",
+      "Brisa",
+      "Pareo",
+      "Voleibol Playa",
+      "Banana Boat",
+      "Paddle Surf",
+      "Maracas",
+      "Pina Colada",
+      "Barbacoa",
+      "Fogata",
+      "Crucero",
+      "Isla",
+      "Manglar",
+      "Paseo Maritimo",
+      "Surfskate",
+      "Camino Costero",
+      "Piscina Infinita",
+      "Flotador",
+      "Cabana",
+      "Tropicalia",
+      "Caracola",
+      "Cometa",
+      "Kayak",
+      "Laguna",
+      "Agua de Coco",
+      "Tiki",
+      "Luau",
+      "Ceviche Fresco",
+      "Puesta de Sol",
+      "Caipirinha",
+      "Sombrero Panama",
+      "Caminata Descalza",
+      "Espuma",
+      "Marea Baja",
+      "Caleta",
+      "Playa Virgen",
+      "Festival",
+      "Carrito de Helados",
+      "Concha",
+      "Refresco",
+      "Brisa Marina",
+    ],
   },
   {
     id: "transport",
     title: "Transportes",
     emoji: "🚀",
-    tag: "Rapido",
     description: "Medios locos para moverse.",
     gradient: "linear-gradient(135deg, #36d1dc, #5b86e5)",
-    words: ["Globo", "Tranvia", "Moto", "Cohete", "Submarino", "Convertible"],
+    words: [
+      "Globo",
+      "Tranvia",
+      "Moto",
+      "Cohete",
+      "Submarino",
+      "Convertible",
+      "Helicoptero",
+      "Avioneta",
+      "Velero",
+      "Ferry",
+      "Tren Bala",
+      "Monopatin Electrico",
+      "Tractor",
+      "Camioneta",
+      "Patineta",
+      "Dirigible",
+      "Teleferico",
+      "Funicular",
+      "Quad",
+      "Trineo",
+      "Limusina",
+      "Caravana",
+      "Bus Escolar",
+      "Taxi",
+      "Metro",
+      "Segway",
+      "Scooter",
+      "Patines",
+      "Jetpack",
+      "Dron",
+      "Camion",
+      "Bicitaxi",
+      "Lancha",
+      "Yate",
+      "Catamaran",
+      "Moto de Agua",
+      "Motonieve",
+      "Sidecar",
+      "Transbordador",
+      "Gondola",
+      "Carroza",
+      "Carreta",
+      "Vagoneta",
+      "Autobus Articulado",
+      "Bulldozer",
+      "Montana Rusa",
+      "Hovercraft",
+      "Autobus Urbano",
+      "Camion Cisterna",
+      "Trineo de Perros",
+      "Trolebus",
+      "Vela Solar",
+      "Capsula Hyperloop",
+      "Vehiculo Lunar",
+      "Rickshaw",
+      "Taxi Acuatico",
+    ],
   },
   {
     id: "fantasy",
     title: "Fantasia",
     emoji: "🧙",
-    tag: "Geek",
     description: "Criaturas y magia ligera.",
     gradient: "linear-gradient(135deg, #c471f5, #fa71cd)",
-    words: ["Dragon", "Hechicero", "Castillo", "Grifo", "Portal", "Sirena"],
+    words: [
+      "Dragon",
+      "Hechicero",
+      "Castillo",
+      "Grifo",
+      "Portal",
+      "Sirena",
+      "Elfo",
+      "Duende",
+      "Bruja",
+      "Varita",
+      "Pocion",
+      "Caldero",
+      "Hada",
+      "Pegaso",
+      "Reino Perdido",
+      "Runas",
+      "Cristal Magico",
+      "Golem",
+      "Necromante",
+      "Fenix",
+      "Caballero",
+      "Taberna",
+      "Oraculo",
+      "Libro Arcano",
+      "Espada Legendaria",
+      "Armadura Magica",
+      "Bosque Encantado",
+      "Bestia Mistica",
+      "Dungeon",
+      "Wyvern",
+      "Paladin",
+      "Bardo",
+      "Monstruo Marino",
+      "Sombras Vivientes",
+      "Hombre Lobo",
+      "Vampiro",
+      "Talisman",
+      "Reliquia",
+      "Hechizo",
+      "Basilisco",
+      "Dragona",
+      "Orbe",
+      "Cetro",
+      "Clerigo",
+      "Encantador",
+      "Quimera",
+      "Invocador",
+      "Portal Oscuro",
+      "Llama Eterna",
+      "Cristal Oscuro",
+      "Fosa Abisal",
+      "Carro Alado",
+      "Trono Vacante",
+      "Corona Rota",
+      "Mapa Secreto",
+      "Pergamino",
+    ],
   },
 ];
 
-const wordBank = themePacks.reduce((bank, pack) => {
-  bank[pack.id] = pack.words;
-  return bank;
-}, {});
+const RANDOM_THEME_PACK = {
+  id: "random",
+  title: "Random",
+  emoji: "🎲",
+  tag: "Sorpresa",
+  description: "Puede salir cualquier tema.",
+  gradient: "linear-gradient(135deg, #845ec2, #2fd7c4)",
+};
+
+const RANDOM_THEME_ID = RANDOM_THEME_PACK.id;
+
+let themePacks = attachRandomThemePack(fallbackThemePacks);
+
+function buildWordBank(packs) {
+  return packs.reduce((bank, pack) => {
+    bank[pack.id] = pack.words;
+    return bank;
+  }, {});
+}
+
+let wordBank = buildWordBank(themePacks);
+
+function attachRandomThemePack(packs) {
+  const safePacks = Array.isArray(packs) ? packs : [];
+  const basePacks = safePacks.filter(
+    (pack) =>
+      pack &&
+      typeof pack.id === "string" &&
+      pack.id !== RANDOM_THEME_PACK.id &&
+      Array.isArray(pack.words) &&
+      pack.words.length
+  );
+  const randomPack = buildRandomThemePack(basePacks);
+  return randomPack ? [randomPack, ...basePacks] : basePacks;
+}
+
+function buildRandomThemePack(packs) {
+  const pool = packs.reduce((acc, pack) => {
+    if (!Array.isArray(pack.words)) return acc;
+    pack.words.forEach((word) => {
+      const normalized = String(word).trim();
+      if (normalized) {
+        acc.add(normalized);
+      }
+    });
+    return acc;
+  }, new Set());
+
+  if (!pool.size) {
+    return null;
+  }
+
+  return {
+    ...RANDOM_THEME_PACK,
+    words: Array.from(pool),
+  };
+}
 
 const initialThemeInput =
   (categoriesField && categoriesField.value) || (themePacks[0] && themePacks[0].id) || "food";
@@ -131,6 +684,47 @@ const state = {
   startingPlayerIndex: 0,
   impostorCount: 1,
 };
+
+function ensureSelectedThemes() {
+  state.selectedThemes = state.selectedThemes.filter((id) => wordBank[id]);
+  const hasNonRandom = state.selectedThemes.some((id) => id !== RANDOM_THEME_ID);
+  if (hasNonRandom) {
+    state.selectedThemes = state.selectedThemes.filter((id) => id !== RANDOM_THEME_ID);
+  }
+  if (!state.selectedThemes.length) {
+    if (wordBank[RANDOM_THEME_ID]) {
+      state.selectedThemes = [RANDOM_THEME_ID];
+    } else if (themePacks[0]) {
+      state.selectedThemes = [themePacks[0].id];
+    }
+  }
+}
+
+function applyThemePacks(packs) {
+  if (!Array.isArray(packs) || !packs.length) return;
+  themePacks = attachRandomThemePack(packs);
+  wordBank = buildWordBank(themePacks);
+  ensureSelectedThemes();
+  renderThemeGrid();
+  renderSelectedThemesList();
+  syncSelectedThemesField();
+}
+
+async function fetchThemePacks() {
+  try {
+    const response = await fetch("data/theme-packs.json", { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    const payload = await response.json();
+    const packs = Array.isArray(payload) ? payload : payload.packs;
+    if (Array.isArray(packs) && packs.length) {
+      applyThemePacks(packs);
+    }
+  } catch (error) {
+    console.warn("No se pudieron cargar los packs externos.", error);
+  }
+}
 
 let pendingPlayers = [];
 let isRoleCardHeld = false;
@@ -251,14 +845,6 @@ function renderSelectedThemesList() {
     card.appendChild(title);
     card.appendChild(meta);
 
-    if (pack.tag) {
-      const tag = document.createElement("span");
-      tag.className = "theme-card__tag";
-      tag.textContent = pack.tag;
-      tag.setAttribute("aria-hidden", "true");
-      card.appendChild(tag);
-    }
-
     fragment.appendChild(card);
   });
 
@@ -267,15 +853,33 @@ function renderSelectedThemesList() {
 
 function toggleTheme(themeId) {
   if (!wordBank[themeId]) return;
-  const currentIndex = state.selectedThemes.indexOf(themeId);
-  if (currentIndex >= 0) {
-    if (state.selectedThemes.length === 1) {
+  const isRandom = themeId === RANDOM_THEME_ID;
+  const hasRandom = state.selectedThemes.includes(RANDOM_THEME_ID);
+  const hasNonRandom = state.selectedThemes.some((id) => id !== RANDOM_THEME_ID);
+
+  if (isRandom) {
+    if (hasNonRandom) {
+      alert("Desactiva el resto de packs para usar Random.");
+      return;
+    }
+    if (hasRandom) {
       alert("Mantén al menos un pack activo.");
       return;
     }
-    state.selectedThemes.splice(currentIndex, 1);
+    state.selectedThemes = [RANDOM_THEME_ID];
   } else {
-    state.selectedThemes.push(themeId);
+    const currentIndex = state.selectedThemes.indexOf(themeId);
+    if (currentIndex >= 0) {
+      state.selectedThemes.splice(currentIndex, 1);
+      if (!state.selectedThemes.length) {
+        state.selectedThemes = [RANDOM_THEME_ID];
+      }
+    } else {
+      if (hasRandom) {
+        state.selectedThemes = state.selectedThemes.filter((id) => id !== RANDOM_THEME_ID);
+      }
+      state.selectedThemes.push(themeId);
+    }
   }
   syncSelectedThemesField();
   highlightSelectedTheme();
@@ -312,14 +916,6 @@ function renderThemeGrid() {
     card.appendChild(icon);
     card.appendChild(title);
     card.appendChild(meta);
-
-    if (pack.tag) {
-      const tag = document.createElement("span");
-      tag.className = "theme-card__tag";
-      tag.textContent = pack.tag;
-      tag.setAttribute("aria-hidden", "true");
-      card.appendChild(tag);
-    }
 
     card.addEventListener("click", () => toggleTheme(pack.id));
     card.addEventListener("keydown", handleThemeCardKeydown);
@@ -371,6 +967,31 @@ function addPlayersFromInput(raw) {
   if (added) {
     renderPlayerList();
   }
+}
+
+function commitPlayerInput() {
+  if (!playerInput) return;
+  const rawValue = playerInput.value;
+  if (!rawValue.trim()) return;
+  addPlayersFromInput(rawValue);
+  playerInput.value = "";
+}
+
+function handlePlayerInputKey(event) {
+  if (event.key !== "Enter") return;
+  event.preventDefault();
+  event.stopPropagation();
+  commitPlayerInput();
+}
+
+function handlePlayerInputBeforeInput(event) {
+  if (event.inputType !== "insertLineBreak") return;
+  event.preventDefault();
+  commitPlayerInput();
+}
+
+function handlePlayerInputChange() {
+  commitPlayerInput();
 }
 
 function removePlayer(index) {
@@ -609,6 +1230,7 @@ if (resetGameBtn) {
 renderPlayerList();
 renderThemeGrid();
 showScreen("screen-setup");
+fetchThemePacks();
 
 if (createPackBtn) {
   createPackBtn.addEventListener("click", () => {
@@ -617,12 +1239,9 @@ if (createPackBtn) {
 }
 
 if (playerInput) {
-  playerInput.addEventListener("keydown", (event) => {
-    if (event.key !== "Enter") return;
-    event.preventDefault();
-    addPlayersFromInput(playerInput.value);
-    playerInput.value = "";
-  });
+  playerInput.addEventListener("keydown", handlePlayerInputKey);
+  playerInput.addEventListener("beforeinput", handlePlayerInputBeforeInput);
+  playerInput.addEventListener("change", handlePlayerInputChange);
 }
 
 if (roleCard) {
@@ -637,7 +1256,4 @@ if (roleCard) {
 setupForm.addEventListener("submit", handleSetupSubmit);
 roleNextBtn.addEventListener("click", goToNextPlayer);
 showResultsBtn.addEventListener("click", revealWordAndImpostors);
-reviewCluesBtn.addEventListener("click", () => {
-  showScreen("screen-clues");
-});
 nextRoundBtn.addEventListener("click", handleNextRound);

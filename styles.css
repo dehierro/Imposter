@@ -406,6 +406,28 @@ button:not(:disabled):hover {
   gap: 0.85rem;
 }
 
+.theme-panel .theme-grid {
+  max-height: clamp(220px, 32vh, 360px);
+  overflow-y: auto;
+  padding-right: 0.35rem;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+
+.theme-panel .theme-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.theme-panel .theme-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+}
+
+.theme-panel .theme-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+}
+
 .theme-grid--compact {
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 0.65rem;

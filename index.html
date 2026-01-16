@@ -30,6 +30,7 @@
                 id="playerInput"
                 placeholder="Escribe un nombre y pulsa Enter"
                 autocomplete="off"
+                enterkeyhint="done"
               />
               <p class="field-hint">Pulsa Enter después de cada nombre (mínimo 3).</p>
               <input type="hidden" name="players" id="playersField" />
@@ -53,13 +54,13 @@
               role="group"
               aria-label="Paquetes de temas disponibles"
             ></div>
-            <input type="hidden" name="categories" id="categoriesField" value="food" />
+            <input type="hidden" name="categories" id="categoriesField" value="random" />
           </div>
 
           <div class="field inline">
             <label class="field">
               <span>Número de impostores</span>
-              <input type="number" name="impostors" min="1" max="5" value="1" />
+              <input type="number" name="impostors" min="1" max="5" value="1" enterkeyhint="done"/>
             </label>
           </div>
 
@@ -132,7 +133,6 @@
           <p class="result-word" id="resultWord">???</p>
           <p class="result-imposter" id="resultImposter">Impostor: ???</p>
           <div class="result-actions">
-            <button class="ghost" type="button" id="reviewCluesBtn">Ver pistas</button>
             <button class="pill" type="button" id="nextRoundBtn">Volver al inicio</button>
           </div>
         </div>
