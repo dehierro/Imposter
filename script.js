@@ -1,4 +1,5 @@
 const screens = Array.from(document.querySelectorAll(".screen"));
+const appRoot = document.querySelector(".app");
 const setupForm = document.getElementById("setupForm");
 const resetGameBtn = document.getElementById("resetGameBtn");
 const roleCard = document.getElementById("roleCard");
@@ -147,6 +148,9 @@ function showScreen(id) {
   screens.forEach((screen) => {
     screen.classList.toggle("active", screen.id === id);
   });
+  if (appRoot) {
+    appRoot.classList.toggle("app--full", id === "screen-setup");
+  }
 }
 
 function parsePlayers(raw) {
@@ -596,12 +600,15 @@ function getImpostorNames() {
   return state.imposterIndices.map((index) => state.players[index]);
 }
 
-resetGameBtn.addEventListener("click", () => {
-  window.location.reload();
-});
+if (resetGameBtn) {
+  resetGameBtn.addEventListener("click", () => {
+    window.location.reload();
+  });
+}
 
 renderPlayerList();
 renderThemeGrid();
+showScreen("screen-setup");
 
 if (createPackBtn) {
   createPackBtn.addEventListener("click", () => {

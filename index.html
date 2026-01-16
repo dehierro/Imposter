@@ -18,33 +18,7 @@
       <span class="orb orb-two"></span>
     </div>
     <main class="app">
-      <header class="app__header">
-        <div class="hero-copy">
-          <p class="eyebrow">Juego social en vivo</p>
-          <h1>Imposter</h1>
-          <p class="lede">
-            Organiza partidas rápidas de deducción social. Configura la partida,
-            reparte roles y guía las rondas desde un solo dispositivo.
-          </p>
-          <div class="hero-chips" aria-label="Características destacadas">
-            <span class="chip">Modo sala</span>
-            <span class="chip">Listo en 2 minutos</span>
-            <span class="chip">Táctil optimizado</span>
-          </div>
-        </div>
-        <div class="hero-card" aria-live="polite">
-          <p class="hero-card__eyebrow">Sesión actual</p>
-          <p class="hero-card__title">Pasa el teléfono</p>
-          <p class="hero-card__meta">Cada persona revela su rol en secreto y sigue la guía en pantalla.</p>
-          <button class="pill" id="resetGameBtn" type="button">Reiniciar partida</button>
-        </div>
-      </header>
-
-      <section class="screen active" id="screen-setup" aria-labelledby="setup-title">
-        <div class="screen__header">
-          <h2 id="setup-title">Preparación</h2>
-          <p>Configura la partida antes de repartir roles.</p>
-        </div>
+      <section class="screen screen--full active" id="screen-setup" aria-label="Configuración de partida">
         <form class="panel" id="setupForm">
           <div class="field">
             <label for="playerInput">
@@ -164,9 +138,6 @@
         </div>
       </section>
 
-      <footer class="app__footer">
-        <p>Diseñado para sesiones presenciales. Puedes duplicar este sitio en cualquier dispositivo.</p>
-      </footer>
     </main>
     <script src="script.js"></script>
   </body>
