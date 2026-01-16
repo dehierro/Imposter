@@ -873,6 +873,7 @@ const state = {
   selectedThemes: defaultThemeList.slice(),
   startingPlayerIndex: 0,
   impostorCount: 1,
+  randomImpostors: false,
 };
 
 function ensureSelectedThemes() {
@@ -1227,8 +1228,16 @@ function assignImpostors() {
     return;
   }
 
+  let impostorCount = state.impostorCount;
+  
+  // If random mode is enabled, pick a random number between 1 and half of players
+  if (state.randomImpostors) {
+    const maxImpostors = Math.floor(totalPlayers / 2);
+    impostorCount = Math.floor(Math.random() * maxImpostors) + 1;
+  }
+
   const allowedCount = Math.min(
-    Math.max(1, state.impostorCount),
+    Math.max(1, impostorCount),
     Math.max(1, totalPlayers - 1)
   );
 
@@ -1368,6 +1377,7 @@ function handleSetupSubmit(event) {
   state.players = pendingPlayers.slice();
   const impostorInput = Number(formData.get("impostors")) || 1;
   state.impostorCount = Math.max(1, Math.floor(impostorInput));
+  state.randomImpostors = formData.get("randomImpostors") === "on";
 
   initializeRound();
   showScreen("screen-roles");
@@ -1432,6 +1442,15 @@ if (playerInput) {
   playerInput.addEventListener("keydown", handlePlayerInputKey);
   playerInput.addEventListener("beforeinput", handlePlayerInputBeforeInput);
   playerInput.addEventListener("change", handlePlayerInputChange);
+}
+
+const impostorInput = document.getElementById("impostorInput");
+const randomImpostorsCheckbox = document.getElementById("randomImpostorsCheckbox");
+
+if (randomImpostorsCheckbox && impostorInput) {
+  randomImpostorsCheckbox.addEventListener("change", () => {
+    impostorInput.disabled = randomImpostorsCheckbox.checked;
+  });
 }
 
 if (roleCard) {
