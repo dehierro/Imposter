@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Imposter Party</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Public+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true">
+      <span class="orb orb-one"></span>
+      <span class="orb orb-two"></span>
+    </div>
+    <main class="app">
+      <header class="app__header">
+        <div class="hero-copy">
+          <p class="eyebrow">Juego social en vivo</p>
+          <h1>Imposter</h1>
+          <p class="lede">
+            Organiza partidas rápidas de deducción social. Configura la partida,
+            reparte roles y guía las rondas desde un solo dispositivo.
+          </p>
+          <div class="hero-chips" aria-label="Características destacadas">
+            <span class="chip">Modo sala</span>
+            <span class="chip">Listo en 2 minutos</span>
+            <span class="chip">Táctil optimizado</span>
+          </div>
+        </div>
+        <div class="hero-card" aria-live="polite">
+          <p class="hero-card__eyebrow">Sesión actual</p>
+          <p class="hero-card__title">Pasa el teléfono</p>
+          <p class="hero-card__meta">Cada persona revela su rol en secreto y sigue la guía en pantalla.</p>
+          <button class="pill" id="resetGameBtn" type="button">Reiniciar partida</button>
+        </div>
+      </header>
+
+      <section class="screen active" id="screen-setup" aria-labelledby="setup-title">
+        <div class="screen__header">
+          <h2 id="setup-title">Preparación</h2>
+          <p>Configura la partida antes de repartir roles.</p>
+        </div>
+        <form class="panel" id="setupForm">
+          <div class="field">
+            <label for="playerInput">
+              <span>Nombres de jugadores</span>
+            </label>
+            <div class="player-input">
+              <input
+                type="text"
+                id="playerInput"
+                placeholder="Escribe un nombre y pulsa Enter"
+                autocomplete="off"
+              />
+              <p class="field-hint">Pulsa Enter después de cada nombre (mínimo 3).</p>
+              <input type="hidden" name="players" id="playersField" />
+            </div>
+            <div class="player-list" id="playerList" aria-live="polite">
+              <p class="player-empty">Añade al menos 3 jugadores.</p>
+            </div>
+          </div>
+
+          <div class="field theme-panel">
+            <div class="theme-panel__header">
+              <div>
+                <span>Temas</span>
+                <p class="field-hint">Activa varios packs para mezclar palabras.</p>
+              </div>
+              <button class="chip chip--action" type="button" id="createPackBtn">Crear</button>
+            </div>
+            <div
+              class="theme-grid"
+              id="themeGrid"
+              role="group"
+              aria-label="Paquetes de temas disponibles"
+            ></div>
+            <input type="hidden" name="categories" id="categoriesField" value="food" />
+          </div>
+
+          <div class="field inline">
+            <label class="field">
+              <span>Número de impostores</span>
+              <input type="number" name="impostors" min="1" max="5" value="1" />
+            </label>
+          </div>
+
+          <button class="cta" type="submit">Iniciar partida</button>
+        </form>
+      </section>
+
+      <section class="screen" id="screen-roles" aria-labelledby="roles-title">
+        <div class="screen__header">
+          <h2 id="roles-title">Revela tu rol</h2>
+          <p>Entrega el dispositivo y deja que cada persona vea su rol en secreto.</p>
+          <div class="selected-themes" aria-live="polite">
+            <p class="selected-themes__label">Temas activos</p>
+            <div
+              class="theme-grid theme-grid--compact"
+              id="selectedThemesList"
+              aria-label="Temas activos seleccionados"
+            ></div>
+          </div>
+        </div>
+        <div class="panel role-panel">
+          <p class="role-panel__tracker"><span id="roleProgress">Jugador 0</span></p>
+          <div
+            class="role-card"
+            id="roleCard"
+            data-role="hidden"
+            role="button"
+            tabindex="0"
+            aria-pressed="false"
+            aria-describedby="roleCardHint"
+          >
+            <div class="role-card__inner">
+              <div class="role-card__face role-card__face--front">
+                <p class="role-card__label" id="roleCardHint">Mantén pulsado para revelar</p>
+                <p class="role-card__helper">Pasa el dispositivo solo cuando no estés mirando.</p>
+              </div>
+              <div class="role-card__face role-card__face--back">
+                <p class="role-card__label">Tu rol</p>
+                <p class="role-card__value" id="roleValue">---</p>
+              </div>
+            </div>
+          </div>
+          <div class="role-panel__actions">
+            <button class="pill" type="button" id="roleNextBtn" disabled>Siguiente jugador</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-clues" aria-labelledby="clues-title">
+        <div class="screen__header">
+          <h2 id="clues-title">Ronda de pistas</h2>
+          <p>Solo muestra quién abre la ronda. El resto continúa en sentido horario.</p>
+        </div>
+        <div class="panel">
+          <p class="start-callout" id="startingPlayerMessage">Empieza ...</p>
+          <div class="panel__footer">
+            <button class="pill" type="button" id="showResultsBtn">
+              Mostrar palabra e impostores
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-results" aria-labelledby="results-title">
+        <div class="screen__header">
+          <h2 id="results-title">Resultado</h2>
+          <p id="resultsSummary">Todos siguen sospechando...</p>
+        </div>
+        <div class="panel">
+          <p class="result-word" id="resultWord">???</p>
+          <p class="result-imposter" id="resultImposter">Impostor: ???</p>
+          <div class="result-actions">
+            <button class="ghost" type="button" id="reviewCluesBtn">Ver pistas</button>
+            <button class="pill" type="button" id="nextRoundBtn">Volver al inicio</button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="app__footer">
+        <p>Diseñado para sesiones presenciales. Puedes duplicar este sitio en cualquier dispositivo.</p>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
