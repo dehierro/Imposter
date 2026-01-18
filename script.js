@@ -1284,16 +1284,22 @@ function assignImpostors() {
 
   let impostorCount = state.impostorCount;
   
-  // If random mode is enabled, pick a random number between 1 and half of players
+  // If random mode is enabled, pick a random number between 0 and total number of players
   if (state.randomImpostors) {
-    const maxImpostors = Math.floor(totalPlayers / 2);
-    impostorCount = Math.floor(Math.random() * maxImpostors) + 1;
+    impostorCount = Math.floor(Math.random() * (totalPlayers + 1));
   }
 
+  // Allow 0 to all players to be impostors
   const allowedCount = Math.min(
-    Math.max(1, impostorCount),
-    Math.max(1, totalPlayers - 1)
+    Math.max(0, impostorCount),
+    totalPlayers
   );
+
+  // If there are 0 impostors, return early
+  if (allowedCount === 0) {
+    state.imposterIndices = [];
+    return;
+  }
 
   const pool = state.players.map((_, index) => index);
   for (let i = pool.length - 1; i > 0; i -= 1) {
